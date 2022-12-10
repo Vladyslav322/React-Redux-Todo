@@ -22,21 +22,23 @@ function reducer(state = initState, action) {
                         status: 'completed'
                     };
                 }
+                return item;
+            });
 
-                return { ...state, todos };
-            })
+            return { ...state, todos };
         }
-        case 'IN_PROGRESS': {
+        case 'IN_PROGRESS_TODO': {
             const todos = state.todos.map((item) => {
                 if (item.id === action.todoId) {
                     return {
                         ...item,
                         status: 'in-progress'
-                    }
+                    };
                 }
+                return item;
+            });
 
-                return { ...state, todos }
-            })
+            return { ...state, todos };
         }
         case 'OPEN_TODO': {
             const todos = state.todos.map((item) => {
@@ -44,11 +46,12 @@ function reducer(state = initState, action) {
                     return {
                         ...item,
                         status: 'open-todo'
-                    }
+                    };
                 }
+                return item;
 
-                return { ...state, todos }
-            })
+            });
+            return { ...state, todos };
         }
         case 'EDIT_TODO': {
             const todos = state.todos.map((item) => {
@@ -57,9 +60,15 @@ function reducer(state = initState, action) {
                         ...item,
                         ...action.todo.changes,
                         updateDate: Date.now(),
-                    }
+                    };
                 }
-            })
+                return item;
+            });
+
+            return { ...state, todos };
+        }
+        default: {
+            return state;
         }
     }
 }
