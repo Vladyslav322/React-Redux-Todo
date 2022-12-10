@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
+import reducer from './todo.reducer';
 
-export const index = configureStore({
-    reducer: {
-
-    }
+export const store = configureStore({
+    reducer,
 });
