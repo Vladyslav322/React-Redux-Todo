@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './todoForm.module.scss';
+import { v4 as uuidv4 } from 'uuid';
 
 const TodoForm = ({ title, setTitle, description, setDescription, todos, setTodos, setStatus }) => {
     const handlerInput = (event) => {
@@ -17,7 +18,7 @@ const TodoForm = ({ title, setTitle, description, setDescription, todos, setTodo
         setTodos([
             ...todos,
             {
-                id: Math.random() * 100000,
+                id: uuidv4(),
                 title: title,
                 description: description,
                 status: 'open',
