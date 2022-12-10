@@ -1,31 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import classes from './todoForm.module.scss';
 import { v4 as uuidv4 } from 'uuid';
 
-const TodoForm = ({ title, setTitle, description, setDescription, todos, setTodos, setStatus }) => {
-    const handlerInput = (event) => {
-        setDescription(event.target.value);
-    };
+const TodoForm = ({ createTodoCallback }) => {
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
 
-    const handleTitle = (event) => {
-        setTitle(event.target.value);
-    }
+    const handlerInput = (event) => setDescription(event.target.value);
+    const handleTitle = (event) => setTitle(event.target.value);
 
     const handlerSubmitTodo = (event) => {
-        event.preventDefault();
         const currentDate = Date.now();
+        createTodoCallback({
+            id: uuidv4(),
+            title: title,
+            description: description,
+            status: 'open',
+            creationDate: currentDate,
+            updateDate: currentDate,
+        });
 
-        setTodos([
-            ...todos,
-            {
-                id: uuidv4(),
-                title: title,
-                description: description,
-                status: 'open',
-                creationDate: currentDate,
-                updateDate: currentDate,
-            }
-        ]);
+        event.preventDefault();
+
         setDescription('')
         setTitle('');
     };

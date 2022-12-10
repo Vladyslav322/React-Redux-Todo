@@ -1,54 +1,16 @@
 import React from 'react';
 import Todo from '../todo/Todo'
 import classes from './TodoList.module.scss';
+import {useDispatch} from "react-redux";
+import {completedTodo, deleteTodo, inProgressTodo, openTodo} from "../../../redux/actionsTodo";
 
-const TodoList = ({todos, setTodos, displayedTodos, titleEditing, descriptionEditing}) => {
-    const handlerDeleteTodo = (id) => {
-        setTodos(todos.filter((element) => element.id !== id));
-    };
+const TodoList = ({ displayedTodos, titleEditing, descriptionEditing}) => {
+    const dispatch = useDispatch();
 
-    const handlerCompleteTodo = (id) => {
-        setTodos(
-            todos.map((item) => {
-                if (item.id === id) {
-                    return {
-                        ...item,
-                        status: 'completed'
-                    };
-                }
-                return item;
-            })
-        );
-    };
-
-    const handleInProgressTodo = (id) => {
-        setTodos(
-            todos.map((item) => {
-                if (item.id === id) {
-                    return {
-                        ...item,
-                        status: 'in-progress'
-                    };
-                }
-                return item;
-            })
-        );
-    }
-
-    const handleOpenTodoTodo = (id) => {
-        setTodos(
-            todos.map((item) => {
-                if (item.id === id) {
-                    return {
-                        ...item,
-                        status: 'open-todo'
-                    };
-                }
-                return item;
-            })
-        );
-    }
-
+    const handlerDeleteTodo = (id) => dispatch(deleteTodo(id));
+    const handlerCompleteTodo = (id) => dispatch(completedTodo(id));
+    const handleInProgressTodo = (id) => dispatch(inProgressTodo(id));
+    const handleOpenTodoTodo = (id) => dispatch(openTodo(id));
 
     return (
         <ul className={classes.todo__list}>

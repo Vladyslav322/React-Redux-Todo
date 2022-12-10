@@ -1,58 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import './App.scss';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import TodoForm from './components/todo/todoForm/TodoForm';
 import SortTodo from './components/todo/sortTodo/SortTodo';
 import TodoList from './components/todo/todoList/TodoList';
+import {addTodo, editTodo} from './redux/actionsTodo';
 
 function App() {
-    const [creationDate, setCreationDate] = useState('');
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [todos, setTodos] = useState([]);
+    const todos = useSelector((state) => state.todos);
+    const dispatch = useDispatch();
+
     const [status, setStatus] = useState('all');
     const [sortOption, setSortOption] = useState('creationDate');
     const [displayedTodos, setDisplayedTodos] = useState([]);
 
-    const handlerFiltering = (event) => {
-        setStatus(event.target.value);
-    };
-
-    const handleSorting = (event) => {
-        setSortOption(event.target.value);
-    };
-
-    const handleTitleEditing = (todoId, newValue) => {
-        const result = todos.map((todo) => {
-            if (todo.id === todoId) {
-                return {
-                    ...todo,
-                    title: newValue,
-                    updateDate: Date.now(),
-                };
-            } else {
-                return todo;
-            }
-        });
-
-        setTodos(result);
-    };
-
-    const handleDescriptionEditing = (todoId, newValue) => {
-        const result = todos.map((todo) => {
-            if (todo.id === todoId) {
-                return {
-                    ...todo,
-                    description: newValue,
-                    updateDate: Date.now(),
-                };
-            } else {
-                return todo;
-            }
-        });
-
-        setTodos(result);
-    };
+    const createTodo = (todo) => dispatch(addTodo(todo));
+    const handlerFiltering = (event) => setStatus(event.target.value);
+    const handleSorting = (event) => setSortOption(event.target.value);
+    const handleTitleEditing = (todoId, newValue) => dispatch(editTodo(todoId, { title: newValue }));
+    const handleDescriptionEditing = (todoId, newValue) => dispatch((editTodo(todoId, { description: newValue })));
 
     useEffect(() => {
         onSortAndFilterChange();
@@ -79,15 +45,7 @@ function App() {
   return (
     <div className='App'>
         <TodoForm
-            creationDate={creationDate}
-            setCreationDate={setCreationDate}
-            title={title}
-            setTitle={setTitle}
-            todos={todos}
-            setTodos={setTodos}
-            description={description}
-            setDescription={setDescription}
-            setStatus={setStatus}
+            createTodoCallback={createTodo}
         />
         {
             !!todos.length
@@ -98,7 +56,6 @@ function App() {
         }
         <TodoList
             todos={todos}
-            setTodos={setTodos}
             displayedTodos={displayedTodos}
             titleEditing={handleTitleEditing.bind(this)}
             descriptionEditing={handleDescriptionEditing.bind(this)}
