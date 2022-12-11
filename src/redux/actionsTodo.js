@@ -27,3 +27,13 @@ export const openTodo = (todoId) => ({
     type: 'OPEN_TODO',
     todoId,
 });
+
+export const changeSortOption = (option) => ({
+    type: 'CHANGE_OPTION',
+    option,
+});
+
+export const changeStatus = (status) => ({
+    type: 'CHANGE_STATUS',
+    status,
+});
