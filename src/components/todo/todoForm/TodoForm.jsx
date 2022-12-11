@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import classes from './todoForm.module.scss';
-import { v4 as uuidv4 } from 'uuid';
 
 const TodoForm = ({ createTodoCallback }) => {
     const [title, setTitle] = useState('');
@@ -10,14 +9,9 @@ const TodoForm = ({ createTodoCallback }) => {
     const handleTitle = (event) => setTitle(event.target.value);
 
     const handlerSubmitTodo = (event) => {
-        const currentDate = Date.now();
         createTodoCallback({
-            id: uuidv4(),
             title: title,
             description: description,
-            status: 'open',
-            creationDate: currentDate,
-            updateDate: currentDate,
         });
 
         event.preventDefault();
